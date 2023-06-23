@@ -1,81 +1,44 @@
 import React, { useState, useEffect } from "react";
-import getApi from "../Api/Api";
+import getApi from "../Api/getApi";
 const TableBind = () => {
 
     const [Products, setProducts] = useState([])
 
     function generateField(item) {
-
-        if (typeof item == "string" && item.match(/(jpg|jpeg|png|webp)$/g)) {
-            return <img src={item} alt="..." width={100} />
-        }
-        else if (typeof item !== "object") {
-            if(typeof item==="boolean")
-            {
-                return item+'';
-            }
-            return item
-        }
-        else if (typeof item == "object" && !Array.isArray(item)) {
-
-            return Object.keys(item).map((keyName) => {
-                if (typeof item[keyName] != 'object') {
-                    return <p><b>{keyName}</b>:{item[keyName]}<br /></p>
+        return Object.keys(item).map(keyName => {
+            return <td>
+                {
+                    (typeof item[keyName] === "object") ? generateField(item[keyName]) :
+                        (typeof item[keyName] === "string" && item[keyName].match(/(jpg|png|jpeg|webp|gif)$/g)) ? <img src={item[keyName]} width={100} alt="..." /> : item[keyName] + ""
                 }
-                else {
-                    return Object.keys(item[keyName]).length == 2 && Object.keys(item[keyName]).map((objName) => {
-                        return <p>{objName}:{item[keyName][objName]}<br /></p>
-                    })
-                }
-            })
-        }
-        else if (Array.isArray(item) && !item[0].match(/(jpg|jpeg|png|webp)$/g) && typeof item == "object") {
-
-            return item.map(elem => {
-                return <tr>{
-
-                    Object.keys(elem).map(keyItem => {
-                        return <span>{elem[keyItem]}</span>
-                    })
-
-                }
-                </tr>
-            })
-        }
-        else if (Array.isArray(item)) {
-            return item.map((value => {
-
-                if (typeof value == "string" && value.match(/(jpg|jpeg|png|webp)$/g)) {
-                    return <td><img src={value} width={100} alt="..." /></td>
-                }
-                else {
-                    return <td>{value}</td>
-                }
-            }))
-
-        }
-
+            </td>
+        })
     }
 
     useEffect(() => {
-        getApi("carts")
+        getApi("todos")
             .then(res => {
                 setProducts(res[Object.keys(res)[0]])
             }).catch(err => console.log(err))
     }, [])
 
-    // console.log(Products)
-
     return (
         <>
-            <table border={1}>
+            <table className="table table-striped table-bordered">
                 <thead>
                     <tr>
+
                         {
                             Products.length !== 0 && Object.keys(Products[0]).map((data, index) => {
-                                return <th key={index}>{data}</th>
+                                return <>
+                                    <th key={index}>{data}</th>
+
+                                </>
                             })
+
+
                         }
+                        <th colSpan={2}>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,22 +46,21 @@ const TableBind = () => {
                         Products.length !== 0 && Products.map((Product, index) => {
                             return (<tr key={index}>
                                 {
-                                    Object.values(Product).map((item, index) => (
-                                        <td key={index}>
-                                            {
-                                                generateField(item)
-                                            }
-                                        </td>
-                                    ))
+                                    generateField(Product)
                                 }
-                            </tr>
-                            )
-                        })
-                    }
+                                <td>
+                                    <button className="btn btn-outline-primary">Edit</button>
+                                    <button className="btn btn-outline-danger ms-2">Delete</button></td>
+                                
+                            </tr>)
+                        }
+                        )}
                 </tbody>
             </table>
         </>
     )
+
+
 
 }
 export default TableBind;
