@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import getApi from "../Api/getApi";
+import Delete from "../Form/Delete/Delete";
+import Edit from "../Form/Edit/Edit";
 const TableBind = () => {
 
     const [Products, setProducts] = useState([])
@@ -16,7 +18,7 @@ const TableBind = () => {
     }
 
     useEffect(() => {
-        getApi("todos")
+        getApi("users")
             .then(res => {
                 setProducts(res[Object.keys(res)[0]])
             }).catch(err => console.log(err))
@@ -48,10 +50,9 @@ const TableBind = () => {
                                 {
                                     generateField(Product)
                                 }
-                                <td>
-                                    <button className="btn btn-outline-primary">Edit</button>
-                                    <button className="btn btn-outline-danger ms-2">Delete</button></td>
-                                
+                                <td><Edit /></td>
+                                <td><Delete id={Product.id} /></td>
+
                             </tr>)
                         }
                         )}
