@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import getApi from "../Api/getApi";
-import Delete from "../Form/Delete/Delete";
-import Edit from "../Form/Edit/Edit";
+import Delete from "../Form-Control/Delete/Delete";
+import Edit from "../Form-Control/Edit/Edit";
 const TableBind = () => {
 
     const [Products, setProducts] = useState([])
 
     function generateField(item) {
         return Object.keys(item).map(keyName => {
-            return <td>
+            return  <td>
                 {
                     (typeof item[keyName] === "object") ? generateField(item[keyName]) :
                         (typeof item[keyName] === "string" && item[keyName].match(/(jpg|png|jpeg|webp|gif)$/g)) ? <img src={item[keyName]} width={100} alt="..." /> : item[keyName] + ""
@@ -18,7 +18,7 @@ const TableBind = () => {
     }
 
     useEffect(() => {
-        getApi("users")
+        getApi()
             .then(res => {
                 setProducts(res[Object.keys(res)[0]])
             }).catch(err => console.log(err))
@@ -50,7 +50,7 @@ const TableBind = () => {
                                 {
                                     generateField(Product)
                                 }
-                                <td><Edit /></td>
+                                <td><Edit id={Product.id} /></td>
                                 <td><Delete id={Product.id} /></td>
 
                             </tr>)

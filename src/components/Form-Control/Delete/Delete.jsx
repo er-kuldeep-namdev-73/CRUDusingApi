@@ -3,7 +3,8 @@ import DeleteApi from '../../Api/deleteApi';
 const Delete = ({id}) => {
 
     function deleteItem(){
-        DeleteApi("users",id).then((res)=>{
+      
+        DeleteApi(id).then((res)=>{
             console.log(res)
         }).catch((err)=>{
             console.log(err)

@@ -1,6 +1,6 @@
 import { base_url } from "../baseUrl/Config"
-const getApi =  async (endUrl)=>{
-    return await (await fetch(base_url+endUrl)).json()
+const getApi =  async ()=>{
+    return await (await fetch(base_url)).json()
 }
 
 export default getApi;

@@ -1,6 +1,6 @@
 import { base_url } from "../baseUrl/Config"
-const DeleteApi =  async (endUrl,id)=>{
-    return (await fetch(base_url+endUrl+"/"+id,{
+const DeleteApi =  async (id)=>{
+    return (await fetch(base_url+"/"+id,{
         method:"DELETE"
     }))
 }
