@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import editApi from '../../Api/fetchApi';
+import getApi from '../../Api/getApi.js';
 import Form from '../Form/form';
 
 const Edit = ({id}) => {
@@ -9,12 +9,10 @@ const Edit = ({id}) => {
   const[data,setData]=useState({})
 
   function handleEdit() {
-    editApi(id).then((res) => {
-        res.json().then((result)=>{
+    getApi(id).then((result)=>{
           console.log(result)
         setShowData(true)
         setData(result)
-        })
     }).catch((err) => {
         console.log(err)
     })
@@ -23,7 +21,7 @@ const Edit = ({id}) => {
   return (
     <>
         {showData?
-        <div  className='position-absolute top-50 start-50 translate-middle bg-dark fs-5 text-light p-2 rounded w-50 text-start'>
+        <div  className='position-absolute top-0 start-50 bg-dark fs-5 text-light p-2 rounded w-50 text-start'>
            <h1 className='text-center border-bottom border-success'>Update Form</h1>
         <Form data={data}/>
         <button className='btn btn-outline-warning form-control w-100'>Update</button>
