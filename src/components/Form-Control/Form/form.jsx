@@ -1,34 +1,58 @@
-import React from 'react';
-import SubForm from "./SubForm.jsx"
-const Form = ({data}) => {
-  //console.log(data)
+import React, { useState } from 'react';
+const Form = ({ data }) => {
 
-  function dataChange(e){
-    console.log(e.target.value)
+  const [formData, setFormData] = useState({ ...data })
+
+  function submitData(e) {
+    e.preventDefault()
+    console.log(formData)
   }
 
+  function changeData(data, keyName) {
+    return Object.keys(data).map((item, index) => {
+      if (typeof data[item] === "object") {
+        return (<div className='border border-primary m-2 p-1 rounded'>
+        <span>{item} : </span>
+          {changeData(data[item],item)}
+        </div>
+        )
+      }
+      else {
+        return (
+          <div>
+            <label>{item} : </label>
+            <input type="text" className='form-control' value={Object.values(data)[index]} name={item} onChange={(e) => setFormData({ ...formData, [keyName]: { ...data, [e.target.name]: e.target.value } })} />
+          </div>
+        )
+      }
+    })
+  }
+
+  //Form Return
   return (
     <div>
-        <form>
-            {
-              Object.keys(data).map((item)=>{
-				 if(typeof data[item]==="object"){
-					 return (
-					 <div className="border border-light m-2 p-1">
-					 <span>{item} : </span><br/>
-					 <SubForm data={data[item]} className='form-control my-2' keyName={item}/>
-					 </div>
-					 )
-				 }
-                return (
-                  <>
-                    <label>{item} : </label><br/>
-                    <input type="text" value={data[item]} className='form-control my-2' onChange={dataChange} name={item}/>
-                  </>
-                )
-              })
+      <form onSubmit={submitData}>
+        {
+          Object.keys(formData).map((item) => {
+            if (typeof formData[item] === "object") {
+              return (
+                <div className="border border-light m-2 p-1 rounded">
+                  <span>{item} : </span><br />
+                  {changeData(formData[item], item)}
+                </div>
+              )
             }
-        </form>
+            else
+              return (
+                <>
+                  <label>{item} : </label><br />
+                  <input type='text' className='form-control' value={formData[item]} onChange={(e) => setFormData({ ...formData, [item]: e.target.value })} />
+                </>
+              )
+          })
+        }
+        <button type="submit" className='btn btn-outline-danger form-control w-100 my-2'>Update</button>
+      </form>
     </div>
   )
 }
