@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import getApi from "../Api/getApi";
 import Delete from "../Form-Control/Delete/Delete";
 import Edit from "../Form-Control/Edit/Edit";
+import Create from "../Form-Control/Create/Create"
 const TableBind = () => {
 
     const [Products, setProducts] = useState([])
@@ -26,6 +27,7 @@ const TableBind = () => {
 
     return (
         <>
+			<Create data={Products}/>
             <table className="table table-striped table-bordered">
                 <thead>
                     <tr>
