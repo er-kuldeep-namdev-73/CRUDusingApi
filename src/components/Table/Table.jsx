@@ -9,10 +9,12 @@ const TableBind = () => {
 
     function generateField(item) {
         return Object.keys(item).map(keyName => {
+            console.log(item[keyName])
             return  <td>
                 {
+                   
                     (typeof item[keyName] === "object") ? generateField(item[keyName]) :
-                        (typeof item[keyName] === "string" && item[keyName].match(/(jpg|png|jpeg|webp|gif)$/g)) ? <img src={item[keyName]} width={100} alt="..." /> : item[keyName] + ""
+                        (typeof item[keyName] === "string" && item[keyName].match(/(jpg|png|jpeg|webp|gif)$/g)) ? <img src={`${item[keyName]}`} width={100} alt="loading" /> : item[keyName] + ""
                 }
             </td>
         })

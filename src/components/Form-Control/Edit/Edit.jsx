@@ -28,14 +28,15 @@ function handleSubmit(e) {
     }).catch((err) => {
       console.log(err)
     })
+    setShowData(false)
   }
 
 
 
   return (
     <>
-        {Object.keys(data).length!=0?
-        <Form data={data}  handleSubmit={handleSubmit} formData={formData} setFormData={setFormData}/>
+        { showData && Object.keys(data).length!=0?
+        <Form data={data}  handleSubmit={handleSubmit} formData={formData} setFormData={setFormData} isAddForm={false}/>
         :null}
         {<button className='btn btn-outline-success' onClick={handleEdit} >Edit</button>}
     </>
