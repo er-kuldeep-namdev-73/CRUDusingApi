@@ -9,40 +9,39 @@ const TableBind = () => {
 
     function generateField(item) {
         return Object.keys(item).map(keyName => {
-            console.log(item[keyName])
-            return  <td>
+            return  (<>
+            <td>
+                
                 {
-                   
                     (typeof item[keyName] === "object") ? generateField(item[keyName]) :
                         (typeof item[keyName] === "string" && item[keyName].match(/(jpg|png|jpeg|webp|gif)$/g)) ? <img src={`${item[keyName]}`} width={100} alt="loading" /> : item[keyName] + ""
                 }
             </td>
+            </>
+            )
         })
     }
 
     useEffect(() => {
         getApi()
             .then(res => {
+                Array.isArray(res) ? setProducts(res) : 
                 setProducts(res[Object.keys(res)[0]])
             }).catch(err => console.log(err))
     }, [])
 
     return (
         <>
-			<Create data={Products}/>
+			<Create data={Products} setProducts={setProducts}/>
             <table className="table table-striped table-bordered">
                 <thead>
-                    <tr>
-
+                    <tr index={Products.id}>
                         {
                             Products.length !== 0 && Object.keys(Products[0]).map((data, index) => {
                                 return <>
                                     <th key={index}>{data}</th>
-
                                 </>
                             })
-
-
                         }
                         <th colSpan={2}>Action</th>
                     </tr>
@@ -54,8 +53,8 @@ const TableBind = () => {
                                 {
                                     generateField(Product)
                                 }
-                                <td><Edit id={Product.id} /></td>
-                                <td><Delete id={Product.id} /></td>
+                                <td><Edit id={Product.id} data={Product} setProducts={setProducts}/></td>
+                                <td><Delete id={Product.id} data={Product} setProducts={setProducts}/></td>
 
                             </tr>)
                         }

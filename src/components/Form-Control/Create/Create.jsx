@@ -1,7 +1,8 @@
 import React,{useState} from 'react'
 import Form from '../Form/form';
 import postApi from '../../Api/PostApi';
-const Create=({data})=>{
+import getApi from '../../Api/getApi';
+const Create=({data,setProducts})=>{
 	const [showForm,setShowForm]=useState(false);
 	  const [formData, setFormData] = useState({});
 
@@ -36,8 +37,14 @@ const Create=({data})=>{
 	function handleSubmit(e){
 		e.preventDefault()
 		postApi(formData)
-		.then(console.log)
+		.then((res)=>{
+			console.log(res)
+			getApi().then(result=>{
+				setProducts(result)
+			})
+		})
 		setShowForm(false)
+		console.log(formData)
 	}
 
 	return(

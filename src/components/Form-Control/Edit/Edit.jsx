@@ -3,7 +3,7 @@ import getApi from '../../Api/getApi.js';
 import Form from '../Form/form';
 import editApi from '../../Api/fetchApi';
 
-const Edit = ({id}) => {
+const Edit = ({id,setProducts}) => {
 
   const [showData, setShowData] = useState(false)
 
@@ -25,6 +25,9 @@ function handleSubmit(e) {
     e.preventDefault();
     editApi(data.id,formData).then((result) => {
       console.log(result)
+      getApi().then((res)=>{
+        setProducts(res)
+      })
     }).catch((err) => {
       console.log(err)
     })
@@ -35,7 +38,7 @@ function handleSubmit(e) {
 
   return (
     <>
-        { showData && Object.keys(data).length!=0?
+        { showData && Object.keys(data).length!==0?
         <Form data={data}  handleSubmit={handleSubmit} formData={formData} setFormData={setFormData} isAddForm={false}/>
         :null}
         {<button className='btn btn-outline-success' onClick={handleEdit} >Edit</button>}

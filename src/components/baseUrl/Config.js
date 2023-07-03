@@ -1,1 +1,1 @@
-export let base_url = "https://dummyjson.com/products"
+export let base_url = "http://localhost:8000/users"
